@@ -1,0 +1,9 @@
+{
+    "propsyBackendJwtApp": {
+        "FoodOrderParticipant": {
+            "null": "",
+            "DELIVERYMAN": "DELIVERYMAN",
+            "PURCHASER": "PURCHASER"
+        }
+    }
+}

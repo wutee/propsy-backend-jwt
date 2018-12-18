@@ -1,0 +1,29 @@
+{
+    "propsyBackendJwtApp": {
+        "restaurant": {
+            "home": {
+                "title": "Restaurants",
+                "createLabel": "Create a new Restaurant",
+                "createOrEditLabel": "Create or edit a Restaurant"
+            },
+            "created": "A new Restaurant is created with identifier {{ param }}",
+            "updated": "A Restaurant is updated with identifier {{ param }}",
+            "deleted": "A Restaurant is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Restaurant {{ id }}?"
+            },
+            "detail": {
+                "title": "Restaurant"
+            },
+            "nameSlug": "Name Slug",
+            "address": "Address",
+            "city": "City",
+            "latitude": "Latitude",
+            "longitude": "Longitude",
+            "photoBlob": "Photo Blob",
+            "worker": "Worker",
+            "order": "Order",
+            "menu": "Menu"
+        }
+    }
+}

@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="menu">
+            <h2><span jhiTranslate="propsyBackendJwtApp.menu.detail.title">Menu</span> {{menu.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="propsyBackendJwtApp.menu.nameSlug">Name Slug</span></dt>
+                <dd>
+                    <span>{{menu.nameSlug}}</span>
+                </dd>
+                <dt><span jhiTranslate="propsyBackendJwtApp.menu.photoBlob">Photo Blob</span></dt>
+                <dd>
+                    <div *ngIf="menu.photoBlob">
+                        <a (click)="openFile(menu.photoBlobContentType, menu.photoBlob)">
+                            <img [src]="'data:' + menu.photoBlobContentType + ';base64,' + menu.photoBlob" style="max-width: 100%;" alt="menu image"/>
+                        </a>
+                        {{menu.photoBlobContentType}}, {{byteSize(menu.photoBlob)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="propsyBackendJwtApp.menu.restaurant">Restaurant</span></dt>
+                <dd>
+                    <div *ngIf="menu.restaurant">
+                        <a [routerLink]="['/restaurant', menu.restaurant?.id, 'view']">{{menu.restaurant?.nameSlug}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="propsyBackendJwtApp.menu.foodItems">Food Items</span></dt>
+                <dd>
+                    <span *ngFor="let foodItems of menu.foodItems; let last = last">
+                        <a [routerLink]="['/food', foodItems?.id, 'view' ]">{{foodItems.nameSlug}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/menu', menu.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

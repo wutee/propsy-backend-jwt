@@ -1,0 +1,30 @@
+{
+    "propsyBackendJwtApp": {
+        "food": {
+            "home": {
+                "title": "Foods",
+                "createLabel": "Create a new Food",
+                "createOrEditLabel": "Create or edit a Food"
+            },
+            "created": "A new Food is created with identifier {{ param }}",
+            "updated": "A Food is updated with identifier {{ param }}",
+            "deleted": "A Food is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Food {{ id }}?"
+            },
+            "detail": {
+                "title": "Food"
+            },
+            "nameSlug": "Name Slug",
+            "price": "Price",
+            "foodDescription": "Food Description",
+            "calories": "Calories",
+            "isSpicy": "Is Spicy",
+            "isVegetarian": "Is Vegetarian",
+            "isGlutenFree": "Is Gluten Free",
+            "photoBlob": "Photo Blob",
+            "menu": "Menu",
+            "order": "Order"
+        }
+    }
+}

@@ -1,0 +1,110 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-food-heading" jhiTranslate="propsyBackendJwtApp.food.home.createOrEditLabel">Create or edit a Food</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!food.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="food.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.food.nameSlug" for="field_nameSlug">Name Slug</label>
+                    <input type="text" class="form-control" name="nameSlug" id="field_nameSlug"
+                        [(ngModel)]="food.nameSlug" required minlength="2" maxlength="250"/>
+                    <div [hidden]="!(editForm.controls.nameSlug?.dirty && editForm.controls.nameSlug?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nameSlug?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nameSlug?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nameSlug?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.food.price" for="field_price">Price</label>
+                    <input type="number" class="form-control" name="price" id="field_price"
+                        [(ngModel)]="food.price" required min="0" jhiMin="0"/>
+                    <div [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.price?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.price?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.price?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.food.foodDescription" for="field_foodDescription">Food Description</label>
+                    <input type="text" class="form-control" name="foodDescription" id="field_foodDescription"
+                        [(ngModel)]="food.foodDescription" maxlength="250"/>
+                    <div [hidden]="!(editForm.controls.foodDescription?.dirty && editForm.controls.foodDescription?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.foodDescription?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.food.calories" for="field_calories">Calories</label>
+                    <input type="number" class="form-control" name="calories" id="field_calories"
+                        [(ngModel)]="food.calories" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.food.isSpicy" for="field_isSpicy">Is Spicy</label>
+                    <input type="checkbox" class="form-control" name="isSpicy" id="field_isSpicy"
+                        [(ngModel)]="food.isSpicy" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.food.isVegetarian" for="field_isVegetarian">Is Vegetarian</label>
+                    <input type="checkbox" class="form-control" name="isVegetarian" id="field_isVegetarian"
+                        [(ngModel)]="food.isVegetarian" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.food.isGlutenFree" for="field_isGlutenFree">Is Gluten Free</label>
+                    <input type="checkbox" class="form-control" name="isGlutenFree" id="field_isGlutenFree"
+                        [(ngModel)]="food.isGlutenFree" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.food.photoBlob" for="field_photoBlob">Photo Blob</label>
+                    <div>
+                        <img [src]="'data:' + food.photoBlobContentType + ';base64,' + food.photoBlob" style="max-height: 100px;" *ngIf="food.photoBlob" alt="food image"/>
+                        <div *ngIf="food.photoBlob" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{food.photoBlobContentType}}, {{byteSize(food.photoBlob)}}</span>
+                            <button type="button" (click)="clearInputImage('photoBlob', 'photoBlobContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_photoBlob" (change)="setFileData($event, food, 'photoBlob', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="photoBlob" id="field_photoBlob"
+                        [(ngModel)]="food.photoBlob" />
+                    <input type="hidden" class="form-control" name="photoBlobContentType" id="field_photoBlobContentType"
+                        [(ngModel)]="food.photoBlobContentType" />
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

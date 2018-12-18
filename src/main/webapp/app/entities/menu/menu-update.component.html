@@ -1,0 +1,73 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-menu-heading" jhiTranslate="propsyBackendJwtApp.menu.home.createOrEditLabel">Create or edit a Menu</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!menu.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="menu.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.menu.nameSlug" for="field_nameSlug">Name Slug</label>
+                    <input type="text" class="form-control" name="nameSlug" id="field_nameSlug"
+                        [(ngModel)]="menu.nameSlug" required minlength="2" maxlength="250"/>
+                    <div [hidden]="!(editForm.controls.nameSlug?.dirty && editForm.controls.nameSlug?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nameSlug?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nameSlug?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.nameSlug?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.menu.photoBlob" for="field_photoBlob">Photo Blob</label>
+                    <div>
+                        <img [src]="'data:' + menu.photoBlobContentType + ';base64,' + menu.photoBlob" style="max-height: 100px;" *ngIf="menu.photoBlob" alt="menu image"/>
+                        <div *ngIf="menu.photoBlob" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{menu.photoBlobContentType}}, {{byteSize(menu.photoBlob)}}</span>
+                            <button type="button" (click)="clearInputImage('photoBlob', 'photoBlobContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_photoBlob" (change)="setFileData($event, menu, 'photoBlob', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="photoBlob" id="field_photoBlob"
+                        [(ngModel)]="menu.photoBlob" />
+                    <input type="hidden" class="form-control" name="photoBlobContentType" id="field_photoBlobContentType"
+                        [(ngModel)]="menu.photoBlobContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.menu.restaurant" for="field_restaurant">Restaurant</label>
+                    <select class="form-control" id="field_restaurant" name="restaurant" [(ngModel)]="menu.restaurant" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="restaurantOption.id === menu.restaurant?.id ? menu.restaurant : restaurantOption" *ngFor="let restaurantOption of restaurants; trackBy: trackRestaurantById">{{restaurantOption.nameSlug}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="propsyBackendJwtApp.menu.foodItems" for="field_foodItems">Food Items</label>
+                    <select class="form-control" id="field_foodItems" multiple name="foodItems" [(ngModel)]="menu.foodItems">
+                        <option [ngValue]="getSelected(menu.foodItems, foodOption)" *ngFor="let foodOption of foods; trackBy: trackFoodById">{{foodOption.nameSlug}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

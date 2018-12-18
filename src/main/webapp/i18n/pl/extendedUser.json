@@ -1,0 +1,26 @@
+{
+    "propsyBackendJwtApp": {
+        "extendedUser": {
+            "home": {
+                "title": "Extended User",
+                "createLabel": "Dodaj Extended User",
+                "createOrEditLabel": "Dodaj lub edytuj: Extended User"
+            },
+            "created": "Utworzono nowy obiekt typu Extended User z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Extended User z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Extended User z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Extended User {{ id }}?"
+            },
+            "detail": {
+                "title": "Extended User"
+            },
+            "name": "Name",
+            "address": "Address",
+            "city": "City",
+            "phone": "Phone",
+            "loyaltyPoints": "Loyalty Points",
+            "user": "User"
+        }
+    }
+}

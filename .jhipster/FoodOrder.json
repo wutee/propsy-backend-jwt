@@ -1,0 +1,138 @@
+{
+    "name": "FoodOrder",
+    "fields": [
+        {
+            "fieldName": "timeRating",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "priceRating",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "qualityRating",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "loyaltyPoints",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "addressRating",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "OrderStatus",
+            "fieldValues": "NEW,PAYMENT,CONFIRMED,IN_PROGRESS,TO_PICK_UP,IN_DELIVERY,DELIVERED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "purchaserOpinion",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 250
+        },
+        {
+            "fieldName": "purchaserComment",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 250
+        },
+        {
+            "fieldName": "city",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 2,
+            "fieldValidateRulesMaxlength": 250
+        },
+        {
+            "fieldName": "phone",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 2,
+            "fieldValidateRulesMaxlength": 250
+        },
+        {
+            "fieldName": "address",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 2,
+            "fieldValidateRulesMaxlength": 250
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "restaurant",
+            "otherEntityName": "restaurant",
+            "otherEntityField": "nameSlug"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "deliveryman",
+            "otherEntityName": "user",
+            "otherEntityField": "email"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "purchaser",
+            "otherEntityName": "user",
+            "otherEntityField": "email"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "order",
+            "relationshipName": "foodItems",
+            "otherEntityName": "food",
+            "otherEntityField": "nameSlug",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "movement",
+            "otherEntityName": "foodOrderMovement",
+            "otherEntityRelationshipName": "foodOrder"
+        }
+    ],
+    "changelogDate": "20181218220408",
+    "entityTableName": "food_order",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

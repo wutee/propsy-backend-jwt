@@ -1,0 +1,79 @@
+{
+    "name": "Food",
+    "fields": [
+        {
+            "fieldName": "nameSlug",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 2,
+            "fieldValidateRulesMaxlength": 250
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "foodDescription",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 250
+        },
+        {
+            "fieldName": "calories",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "isSpicy",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "isVegetarian",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "isGlutenFree",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "photoBlob",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "menu",
+            "otherEntityName": "menu",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "foodItems"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "order",
+            "otherEntityName": "foodOrder",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "foodItems"
+        }
+    ],
+    "changelogDate": "20181218220407",
+    "entityTableName": "food",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

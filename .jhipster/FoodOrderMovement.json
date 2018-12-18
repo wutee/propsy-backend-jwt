@@ -1,0 +1,51 @@
+{
+    "name": "FoodOrderMovement",
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "latitude",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "longitude",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "sender",
+            "fieldType": "FoodOrderParticipant",
+            "fieldValues": "DELIVERYMAN,PURCHASER",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "foodOrder",
+            "otherEntityName": "foodOrder",
+            "otherEntityField": "address"
+        }
+    ],
+    "changelogDate": "20181218220409",
+    "entityTableName": "food_order_movement",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,30 @@
+{
+    "propsyBackendJwtApp": {
+        "food": {
+            "home": {
+                "title": "Food",
+                "createLabel": "Dodaj Food",
+                "createOrEditLabel": "Dodaj lub edytuj: Food"
+            },
+            "created": "Utworzono nowy obiekt typu Food z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Food z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Food z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Food {{ id }}?"
+            },
+            "detail": {
+                "title": "Food"
+            },
+            "nameSlug": "Name Slug",
+            "price": "Price",
+            "foodDescription": "Food Description",
+            "calories": "Calories",
+            "isSpicy": "Is Spicy",
+            "isVegetarian": "Is Vegetarian",
+            "isGlutenFree": "Is Gluten Free",
+            "photoBlob": "Photo Blob",
+            "menu": "Menu",
+            "order": "Order"
+        }
+    }
+}

@@ -1,0 +1,98 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="propsyBackendJwtApp.foodOrder.home.title">Food Orders</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-food-order" [routerLink]="['/food-order/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="propsyBackendJwtApp.foodOrder.home.createLabel">
+            Create new Food Order
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="foodOrders">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.timeRating">Time Rating</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.priceRating">Price Rating</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.qualityRating">Quality Rating</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.loyaltyPoints">Loyalty Points</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.addressRating">Address Rating</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.date">Date</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.price">Price</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.status">Status</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.purchaserOpinion">Purchaser Opinion</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.purchaserComment">Purchaser Comment</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.city">City</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.phone">Phone</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.address">Address</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.restaurant">Restaurant</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.deliveryman">Deliveryman</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.purchaser">Purchaser</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.foodOrder.foodItems">Food Items</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let foodOrder of foodOrders ;trackBy: trackId">
+                <td><a [routerLink]="['/food-order', foodOrder.id, 'view' ]">{{foodOrder.id}}</a></td>
+                <td>{{foodOrder.timeRating}}</td>
+                <td>{{foodOrder.priceRating}}</td>
+                <td>{{foodOrder.qualityRating}}</td>
+                <td>{{foodOrder.loyaltyPoints}}</td>
+                <td>{{foodOrder.addressRating}}</td>
+                <td>{{foodOrder.date | date:'mediumDate'}}</td>
+                <td>{{foodOrder.price}}</td>
+                <td jhiTranslate="{{'propsyBackendJwtApp.OrderStatus.' + foodOrder.status}}">{{foodOrder.status}}</td>
+                <td>{{foodOrder.purchaserOpinion}}</td>
+                <td>{{foodOrder.purchaserComment}}</td>
+                <td>{{foodOrder.city}}</td>
+                <td>{{foodOrder.phone}}</td>
+                <td>{{foodOrder.address}}</td>
+                <td>
+                    <div *ngIf="foodOrder.restaurant">
+                        <a [routerLink]="['../restaurant', foodOrder.restaurant?.id, 'view' ]" >{{foodOrder.restaurant?.nameSlug}}</a>
+                    </div>
+                </td>
+                <td>
+                    {{foodOrder.deliveryman?.email}}
+                </td>
+                <td>
+                    {{foodOrder.purchaser?.email}}
+                </td>
+                <td>
+                    <span *ngFor="let foodItems of foodOrder.foodItems; let last = last">
+                            <a class="form-control-static" [routerLink]="['../food', foodItems?.id, 'view' ]">{{foodItems.nameSlug}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/food-order', foodOrder.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/food-order', foodOrder.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'food-order/'+ foodOrder.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

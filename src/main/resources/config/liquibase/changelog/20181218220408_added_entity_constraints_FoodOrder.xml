@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity FoodOrder.
+    -->
+    <changeSet id="20181218220408-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="restaurant_id"
+                                 baseTableName="food_order"
+                                 constraintName="fk_food_order_restaurant_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="restaurant"/>
+
+        <addForeignKeyConstraint baseColumnNames="deliveryman_id"
+                                 baseTableName="food_order"
+                                 constraintName="fk_food_order_deliveryman_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="purchaser_id"
+                                 baseTableName="food_order"
+                                 constraintName="fk_food_order_purchaser_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="food_orders_id"
+                                 baseTableName="food_order_food_items"
+                                 constraintName="fk_food_order_food_items_food_orders_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="food_order"/>
+        <addForeignKeyConstraint baseColumnNames="food_items_id"
+                                 baseTableName="food_order_food_items"
+                                 constraintName="fk_food_order_food_items_food_items_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="food"/>
+        
+    </changeSet>
+</databaseChangeLog>

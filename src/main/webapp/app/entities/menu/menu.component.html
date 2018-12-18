@@ -1,0 +1,73 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="propsyBackendJwtApp.menu.home.title">Menus</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-menu" [routerLink]="['/menu/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="propsyBackendJwtApp.menu.home.createLabel">
+            Create new Menu
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="menus">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.menu.nameSlug">Name Slug</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.menu.photoBlob">Photo Blob</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.menu.restaurant">Restaurant</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.menu.foodItems">Food Items</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let menu of menus ;trackBy: trackId">
+                <td><a [routerLink]="['/menu', menu.id, 'view' ]">{{menu.id}}</a></td>
+                <td>{{menu.nameSlug}}</td>
+                <td>
+                    <a *ngIf="menu.photoBlob" (click)="openFile(menu.photoBlobContentType, menu.photoBlob)">
+                        <img [src]="'data:' + menu.photoBlobContentType + ';base64,' + menu.photoBlob" style="max-height: 30px;" alt="menu image"/>
+                    </a>
+                    <span *ngIf="menu.photoBlob">{{menu.photoBlobContentType}}, {{byteSize(menu.photoBlob)}}</span>
+                </td>
+                <td>
+                    <div *ngIf="menu.restaurant">
+                        <a [routerLink]="['../restaurant', menu.restaurant?.id, 'view' ]" >{{menu.restaurant?.nameSlug}}</a>
+                    </div>
+                </td>
+                <td>
+                    <span *ngFor="let foodItems of menu.foodItems; let last = last">
+                            <a class="form-control-static" [routerLink]="['../food', foodItems?.id, 'view' ]">{{foodItems.nameSlug}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/menu', menu.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/menu', menu.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'menu/'+ menu.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

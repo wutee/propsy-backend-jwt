@@ -1,0 +1,66 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="propsyBackendJwtApp.extendedUser.home.title">Extended Users</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-extended-user" [routerLink]="['/extended-user/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="propsyBackendJwtApp.extendedUser.home.createLabel">
+            Create new Extended User
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="extendedUsers">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.extendedUser.name">Name</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.extendedUser.address">Address</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.extendedUser.city">City</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.extendedUser.phone">Phone</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.extendedUser.loyaltyPoints">Loyalty Points</span></th>
+            <th><span jhiTranslate="propsyBackendJwtApp.extendedUser.user">User</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let extendedUser of extendedUsers ;trackBy: trackId">
+                <td><a [routerLink]="['/extended-user', extendedUser.id, 'view' ]">{{extendedUser.id}}</a></td>
+                <td>{{extendedUser.name}}</td>
+                <td>{{extendedUser.address}}</td>
+                <td>{{extendedUser.city}}</td>
+                <td>{{extendedUser.phone}}</td>
+                <td>{{extendedUser.loyaltyPoints}}</td>
+                <td>
+                    {{extendedUser.user?.email}}
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/extended-user', extendedUser.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/extended-user', extendedUser.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'extended-user/'+ extendedUser.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

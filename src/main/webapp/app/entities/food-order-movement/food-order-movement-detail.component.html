@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="foodOrderMovement">
+            <h2><span jhiTranslate="propsyBackendJwtApp.foodOrderMovement.detail.title">Food Order Movement</span> {{foodOrderMovement.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="propsyBackendJwtApp.foodOrderMovement.date">Date</span></dt>
+                <dd>
+                    <span>{{foodOrderMovement.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="propsyBackendJwtApp.foodOrderMovement.latitude">Latitude</span></dt>
+                <dd>
+                    <span>{{foodOrderMovement.latitude}}</span>
+                </dd>
+                <dt><span jhiTranslate="propsyBackendJwtApp.foodOrderMovement.longitude">Longitude</span></dt>
+                <dd>
+                    <span>{{foodOrderMovement.longitude}}</span>
+                </dd>
+                <dt><span jhiTranslate="propsyBackendJwtApp.foodOrderMovement.sender">Sender</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'propsyBackendJwtApp.FoodOrderParticipant.' + foodOrderMovement.sender}}">{{foodOrderMovement.sender}}</span>
+                </dd>
+                <dt><span jhiTranslate="propsyBackendJwtApp.foodOrderMovement.foodOrder">Food Order</span></dt>
+                <dd>
+                    <div *ngIf="foodOrderMovement.foodOrder">
+                        <a [routerLink]="['/food-order', foodOrderMovement.foodOrder?.id, 'view']">{{foodOrderMovement.foodOrder?.address}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/food-order-movement', foodOrderMovement.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

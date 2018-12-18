@@ -1,0 +1,25 @@
+{
+    "propsyBackendJwtApp": {
+        "foodOrderMovement": {
+            "home": {
+                "title": "Food Order Movement",
+                "createLabel": "Dodaj Food Order Movement",
+                "createOrEditLabel": "Dodaj lub edytuj: Food Order Movement"
+            },
+            "created": "Utworzono nowy obiekt typu Food Order Movement z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Food Order Movement z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Food Order Movement z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Food Order Movement {{ id }}?"
+            },
+            "detail": {
+                "title": "Food Order Movement"
+            },
+            "date": "Date",
+            "latitude": "Latitude",
+            "longitude": "Longitude",
+            "sender": "Sender",
+            "foodOrder": "Food Order"
+        }
+    }
+}

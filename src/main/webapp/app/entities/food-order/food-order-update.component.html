@@ -1,0 +1,196 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-food-order-heading" jhiTranslate="propsyBackendJwtApp.foodOrder.home.createOrEditLabel">Create or edit a Food Order</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!foodOrder.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="foodOrder.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.timeRating" for="field_timeRating">Time Rating</label>
+                    <input type="number" class="form-control" name="timeRating" id="field_timeRating"
+                        [(ngModel)]="foodOrder.timeRating" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.priceRating" for="field_priceRating">Price Rating</label>
+                    <input type="number" class="form-control" name="priceRating" id="field_priceRating"
+                        [(ngModel)]="foodOrder.priceRating" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.qualityRating" for="field_qualityRating">Quality Rating</label>
+                    <input type="number" class="form-control" name="qualityRating" id="field_qualityRating"
+                        [(ngModel)]="foodOrder.qualityRating" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.loyaltyPoints" for="field_loyaltyPoints">Loyalty Points</label>
+                    <input type="number" class="form-control" name="loyaltyPoints" id="field_loyaltyPoints"
+                        [(ngModel)]="foodOrder.loyaltyPoints" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.addressRating" for="field_addressRating">Address Rating</label>
+                    <input type="number" class="form-control" name="addressRating" id="field_addressRating"
+                        [(ngModel)]="foodOrder.addressRating" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.date" for="field_date">Date</label>
+                    <div class="input-group">
+                        <input id="field_date" type="text" class="form-control" name="date" ngbDatepicker  #dateDp="ngbDatepicker" [(ngModel)]="foodOrder.date"
+                        required/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div [hidden]="!(editForm.controls.date?.dirty && editForm.controls.date?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.date?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.price" for="field_price">Price</label>
+                    <input type="number" class="form-control" name="price" id="field_price"
+                        [(ngModel)]="foodOrder.price" required min="0" jhiMin="0"/>
+                    <div [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.price?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.price?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.price?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.status" for="field_status">Status</label>
+                    <select class="form-control" name="status" [(ngModel)]="foodOrder.status" id="field_status"  required>
+                        <option value="NEW">{{'propsyBackendJwtApp.OrderStatus.NEW' | translate}}</option>
+                        <option value="PAYMENT">{{'propsyBackendJwtApp.OrderStatus.PAYMENT' | translate}}</option>
+                        <option value="CONFIRMED">{{'propsyBackendJwtApp.OrderStatus.CONFIRMED' | translate}}</option>
+                        <option value="IN_PROGRESS">{{'propsyBackendJwtApp.OrderStatus.IN_PROGRESS' | translate}}</option>
+                        <option value="TO_PICK_UP">{{'propsyBackendJwtApp.OrderStatus.TO_PICK_UP' | translate}}</option>
+                        <option value="IN_DELIVERY">{{'propsyBackendJwtApp.OrderStatus.IN_DELIVERY' | translate}}</option>
+                        <option value="DELIVERED">{{'propsyBackendJwtApp.OrderStatus.DELIVERED' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.status?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.purchaserOpinion" for="field_purchaserOpinion">Purchaser Opinion</label>
+                    <input type="text" class="form-control" name="purchaserOpinion" id="field_purchaserOpinion"
+                        [(ngModel)]="foodOrder.purchaserOpinion" maxlength="250"/>
+                    <div [hidden]="!(editForm.controls.purchaserOpinion?.dirty && editForm.controls.purchaserOpinion?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.purchaserOpinion?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.purchaserComment" for="field_purchaserComment">Purchaser Comment</label>
+                    <input type="text" class="form-control" name="purchaserComment" id="field_purchaserComment"
+                        [(ngModel)]="foodOrder.purchaserComment" maxlength="250"/>
+                    <div [hidden]="!(editForm.controls.purchaserComment?.dirty && editForm.controls.purchaserComment?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.purchaserComment?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.city" for="field_city">City</label>
+                    <input type="text" class="form-control" name="city" id="field_city"
+                        [(ngModel)]="foodOrder.city" minlength="2" maxlength="250"/>
+                    <div [hidden]="!(editForm.controls.city?.dirty && editForm.controls.city?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.city?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.city?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.phone" for="field_phone">Phone</label>
+                    <input type="text" class="form-control" name="phone" id="field_phone"
+                        [(ngModel)]="foodOrder.phone" minlength="2" maxlength="250"/>
+                    <div [hidden]="!(editForm.controls.phone?.dirty && editForm.controls.phone?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.phone?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.phone?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.address" for="field_address">Address</label>
+                    <input type="text" class="form-control" name="address" id="field_address"
+                        [(ngModel)]="foodOrder.address" minlength="2" maxlength="250"/>
+                    <div [hidden]="!(editForm.controls.address?.dirty && editForm.controls.address?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.address?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.address?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.restaurant" for="field_restaurant">Restaurant</label>
+                    <select class="form-control" id="field_restaurant" name="restaurant" [(ngModel)]="foodOrder.restaurant" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="restaurantOption.id === foodOrder.restaurant?.id ? foodOrder.restaurant : restaurantOption" *ngFor="let restaurantOption of restaurants; trackBy: trackRestaurantById">{{restaurantOption.nameSlug}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.deliveryman" for="field_deliveryman">Deliveryman</label>
+                    <select class="form-control" id="field_deliveryman" name="deliveryman" [(ngModel)]="foodOrder.deliveryman" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id === foodOrder.deliveryman?.id ? foodOrder.deliveryman : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.email}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="propsyBackendJwtApp.foodOrder.purchaser" for="field_purchaser">Purchaser</label>
+                    <select class="form-control" id="field_purchaser" name="purchaser" [(ngModel)]="foodOrder.purchaser" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id === foodOrder.purchaser?.id ? foodOrder.purchaser : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.email}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="propsyBackendJwtApp.foodOrder.foodItems" for="field_foodItems">Food Items</label>
+                    <select class="form-control" id="field_foodItems" multiple name="foodItems" [(ngModel)]="foodOrder.foodItems">
+                        <option [ngValue]="getSelected(foodOrder.foodItems, foodOption)" *ngFor="let foodOption of foods; trackBy: trackFoodById">{{foodOption.nameSlug}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
