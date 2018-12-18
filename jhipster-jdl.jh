@@ -1,0 +1,108 @@
+//=====================================================================================
+//							ENTITIES
+//=====================================================================================
+
+entity Restaurant {
+	nameSlug String required minlength(2) maxlength(250)
+    address String maxlength(250)
+    city String maxlength(250)
+    latitude Double
+    longitude Double
+    photoBlob ImageBlob
+}
+
+entity Menu {
+	nameSlug String required minlength(2) maxlength(250)
+    photoBlob ImageBlob
+}
+
+entity Food {
+	nameSlug String required minlength(2) maxlength(250)
+    price Float required min(0) 
+    foodDescription String maxlength(250)
+    calories Integer
+    isSpicy Boolean
+    isVegetarian Boolean
+    isGlutenFree Boolean
+    photoBlob ImageBlob
+}
+
+entity FoodOrder {
+	timeRating Integer
+    priceRating Integer
+    qualityRating Integer
+    loyaltyPoints Integer
+    addressRating Integer
+	date LocalDate required
+    price Float required min(0)
+    status OrderStatus required
+    purchaserOpinion String maxlength(250)
+    purchaserComment String maxlength(250) 
+    city String minlength(2) maxlength(250)
+  	phone String minlength(2) maxlength(250)
+    address String minlength(2) maxlength(250)
+}
+
+entity FoodOrderMovement {
+    date LocalDate required
+    latitude Double required
+    longitude Double required
+    sender FoodOrderParticipant required
+}
+
+entity ExtendedUser { // polaczyc z jhi_user
+	name String maxlength(250)
+    address String maxlength(250)
+    city String maxlength(250)
+  	phone String maxlength(250)
+    loyaltyPoints Integer
+}
+
+//entity RestaurantWorker {}
+
+enum OrderStatus {
+    NEW, 
+    PAYMENT, 
+    CONFIRMED, 
+    IN_PROGRESS, 
+    TO_PICK_UP, 
+    IN_DELIVERY, 
+    DELIVERED
+}
+
+enum FoodOrderParticipant {
+	DELIVERYMAN, 
+    PURCHASER
+}
+
+//=========================================================================================
+//									RELATIONSHIPS
+//=========================================================================================
+
+relationship ManyToMany {
+	Menu{foodItems(nameSlug)} to Food{menu}
+    // *
+    // User{employer(nameSlug)} to Restaurant{employee}
+    // zatrudnieni w restauracji, ogólnie w niej pracujący, kucharze, menedżerowie, dostawcy
+    // Ludzie mogący zmieniać statusy zamówień w danej restauracji 
+    FoodOrder{foodItems(nameSlug)} to Food{order}
+}
+
+relationship ManyToOne {
+	//User{nameSlug} to Restaurant{user(email)}
+    
+	FoodOrderMovement{foodOrder(address)} to FoodOrder{movement}
+    FoodOrder{restaurant(nameSlug)} to Restaurant{order}
+    FoodOrder{deliveryman(email)} to User{deliveredOrders} 
+    FoodOrder{purchaser(email)} to User{purchasedOrders}
+    Restaurant{worker(email)} to User{workingIn}
+    Menu{restaurant(nameSlug)} to Restaurant{menu}
+}
+
+relationship OneToOne {
+	ExtendedUser{user(email)} to User
+    //RestaurantWorker{user(email)} to User
+    //RestaurantWorker{restaurant(nameSlug)} to Restaurant
+}
+
+
