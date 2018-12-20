@@ -19,6 +19,8 @@ env:
     - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
     - SPRING_JPA_SHOW_SQL=false
     - JHI_DISABLE_WEBPACK_LOGS=true
+    matrix:
+        secure: nB4jgqDZ15s6Uel4fNOvtWvUrMqGWzlwpHJHP5L91kFAv2m+1mB51WdBlnmMwIONZffH+NnERrtFar5Mw3tAfcfrRvSnlPALXIBdVtkajUAVtaPu5Og8ThzN166kBYmGZoyQumxI7snIsiLaowXg0XiCL+rNPbTopAy54JxYJz+MY9vsrZY4xDzVVA+DXyfxqvO2arFfAeaxheBwRsCbD0w5DeHoHQQyiA4eyVRE64n8vrR7Ao3rhfIr7en9kgEBF3xN9t5GSzwEMceaDXkDVXxs3TqKkrqBzOksPTZM8T1MMvjIqUj1qYsNGo9MpMLzupL3Y+zFsBelG1/B45U8CHbE6ltdXz6H2U1H1061KrW15jqod/oTB8tQr5eAhGTkqzQq6QbTAMNskaDJ/A2efXvNSEM9r712ipguRy+KV8ZYbR0TqEiBVDq3W+LD4gk8yCGY8rQqmGDN7WRe3t1bKyWWT4JY94QvGuQdPgWxaUEozUWKC5zBhIuMqbKb0igx5uXb5u21W/g8DDzanHqbb1ccZwJmDzF+HrNh9xs1F3Uv5xcbEDh5iW2omaGTQmpOOthW/AvotkKom2ds5ZuO3dC7bQPbfCIhSnT1IIK9dS1d0qiVMayJTRi4D+0WTxsA1hvY/tdGTtsKvACnMtoZ13BTGd23YEdwQYb8xMq0ZF8=
 before_install:
   - jdk_switcher use oraclejdk8
   - java -version
