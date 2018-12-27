@@ -43,6 +43,8 @@
         ],
         "enableTranslation": true,
         "nativeLanguage": "pl",
-        "languages": ["pl", "en"]
+        "languages": ["pl", "en"],
+        "herokuAppName": "propsy-backend-jwt",
+        "herokuDeployType": "git"
     }
 }
