@@ -2,6 +2,7 @@ package com.propsy.backend.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.propsy.backend.domain.FoodOrder;
+import com.propsy.backend.domain.enumeration.OrderStatus;
 import com.propsy.backend.repository.FoodOrderRepository;
 import com.propsy.backend.web.rest.errors.BadRequestAlertException;
 import com.propsy.backend.web.rest.util.HeaderUtil;
@@ -88,6 +89,13 @@ public class FoodOrderResource {
     public List<FoodOrder> getAllFoodOrders(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all FoodOrders");
         return foodOrderRepository.findAllWithEagerRelationships();
+    }
+
+    @GetMapping("/food-orders/status/{status}")
+    @Timed
+    public List<FoodOrder> getOrdersPerStatus(@PathVariable OrderStatus status) {
+        log.debug("REST request to get FoodOrders per status");
+        return foodOrderRepository.findByStatusEquals(status);
     }
 
     /**
