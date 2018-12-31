@@ -1,6 +1,7 @@
 package com.propsy.backend.repository;
 
 import com.propsy.backend.domain.FoodOrder;
+import com.propsy.backend.domain.enumeration.OrderStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -16,6 +17,9 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface FoodOrderRepository extends JpaRepository<FoodOrder, Long> {
+
+    @Query("select food_order from FoodOrder food_order where food_order.status = :status")
+    List<FoodOrder> findByStatusEquals(OrderStatus status);
 
     @Query("select food_order from FoodOrder food_order where food_order.deliveryman.login = ?#{principal.username}")
     List<FoodOrder> findByDeliverymanIsCurrentUser();
