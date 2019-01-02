@@ -90,6 +90,20 @@ public class FoodOrderResource {
         return foodOrderRepository.findAllWithEagerRelationships();
     }
 
+    @GetMapping("/food-orders/deliveredByMe")
+    @Timed
+    public List<FoodOrder> getMainDeliveredFoodOrders(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get delivered user's FoodOrders");
+        return foodOrderRepository.findByDeliverymanIsCurrentUser();
+    }
+
+    @GetMapping("/food-orders/orderedByMe")
+    @Timed
+    public List<FoodOrder> getMainPurchasedFoodOrders(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get ordered user's FoodOrders");
+        return foodOrderRepository.findByPurchaserIsCurrentUser();
+    }
+
     /**
      * GET  /food-orders/:id : get the "id" foodOrder.
      *
