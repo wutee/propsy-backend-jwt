@@ -1,13 +1,17 @@
 package com.propsy.backend.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.propsy.backend.domain.Authority;
 import com.propsy.backend.domain.Restaurant;
+import com.propsy.backend.domain.User;
 import com.propsy.backend.repository.RestaurantRepository;
+import com.propsy.backend.service.UserService;
 import com.propsy.backend.web.rest.errors.BadRequestAlertException;
 import com.propsy.backend.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +21,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Restaurant.
@@ -31,8 +36,11 @@ public class RestaurantResource {
 
     private final RestaurantRepository restaurantRepository;
 
-    public RestaurantResource(RestaurantRepository restaurantRepository) {
+    private final UserService userService;
+
+    public RestaurantResource(RestaurantRepository restaurantRepository, UserService userService) {
         this.restaurantRepository = restaurantRepository;
+        this.userService = userService;
     }
 
     /**
@@ -49,10 +57,27 @@ public class RestaurantResource {
         if (restaurant.getId() != null) {
             throw new BadRequestAlertException("A new restaurant cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Restaurant result = restaurantRepository.save(restaurant);
-        return ResponseEntity.created(new URI("/api/restaurants/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+
+        if(!isUser.isPresent()) {
+            log.error("User is not logged in");
+            return ResponseEntity.badRequest().build();
+        }
+
+        final User user = isUser.get();
+        Set<Authority> userAuthorities = user.getAuthorities();
+
+        String userRole = getRole(userAuthorities);
+
+        if(userRole.equals("ROLE_ADMIN") || restaurant.getWorker().getId() == null || restaurant.getWorker().getId().equals(user.getId())) {
+            Restaurant result = restaurantRepository.save(restaurant);
+            return ResponseEntity.created(new URI("/api/restaurants/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        }
+
+        throw new BadRequestAlertException("Cannot create a restaurant owned by a different user", ENTITY_NAME, "forbidden");
     }
 
     /**
@@ -68,13 +93,43 @@ public class RestaurantResource {
     @Timed
     public ResponseEntity<Restaurant> updateRestaurant(@Valid @RequestBody Restaurant restaurant) throws URISyntaxException {
         log.debug("REST request to update Restaurant : {}", restaurant);
-        if (restaurant.getId() == null) {
+
+        Long restaurantId = restaurant.getId();
+
+        if (restaurantId == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Restaurant result = restaurantRepository.save(restaurant);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, restaurant.getId().toString()))
-            .body(result);
+
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+
+        if(!isUser.isPresent()) {
+            log.error("User is not logged in");
+            return ResponseEntity.badRequest().build();
+        }
+
+        final User user = isUser.get();
+        Set<Authority> userAuthorities = user.getAuthorities();
+
+        String userRole = getRole(userAuthorities);
+
+        final Optional<Restaurant> isRestaurant = restaurantRepository.findById(restaurantId);
+
+        if(!isRestaurant.isPresent()) {
+            log.error("Restaurant does not exist");
+            return ResponseEntity.badRequest().build();
+        }
+
+        final Restaurant dbRestaurant = isRestaurant.get();
+        Long restaurantOwnerId = dbRestaurant.getWorker().getId();
+
+        if(userRole.equals("ROLE_ADMIN") || restaurantOwnerId.equals(user.getId())) {
+            Restaurant result = restaurantRepository.save(restaurant);
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, restaurant.getId().toString()))
+                .body(result);
+        }
+
+        throw new BadRequestAlertException("Cannot edit a restaurant owned by a different user", ENTITY_NAME, "forbidden");
     }
 
     /**
@@ -114,7 +169,52 @@ public class RestaurantResource {
     public ResponseEntity<Void> deleteRestaurant(@PathVariable Long id) {
         log.debug("REST request to delete Restaurant : {}", id);
 
-        restaurantRepository.deleteById(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+
+        if(!isUser.isPresent()) {
+            log.error("User is not logged in");
+            return ResponseEntity.badRequest().build();
+        }
+
+        final User user = isUser.get();
+        Set<Authority> userAuthorities = user.getAuthorities();
+
+        String userRole = getRole(userAuthorities);
+
+        final Optional<Restaurant> isRestaurant = restaurantRepository.findById(id);
+
+        if(!isRestaurant.isPresent()) {
+            log.error("Restaurant does not exist");
+            return ResponseEntity.badRequest().build();
+        }
+
+        final Restaurant restaurant = isRestaurant.get();
+        Long restaurantOwnerId = restaurant.getWorker().getId();
+
+        if(userRole.equals("ROLE_ADMIN") || user.getId().equals(restaurantOwnerId)) {
+            restaurantRepository.deleteById(id);
+            return ResponseEntity
+                    .ok()
+                    .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
+                    .build();
+        }
+
+        throw new BadRequestAlertException("Cannot delete a restaurant owned by a different user", ENTITY_NAME, "forbidden");
+    }
+
+
+    private String getRole(Set<Authority> userAuthorities) {
+        String userRole = "";
+        for(Authority authority : userAuthorities) {
+            String role = authority.getName();
+            if(role.equals("ROLE_ADMIN"))
+                userRole = role;
+            else if((role.equals("ROLE_CHEF") || role.equals("ROLE_MANAGER")) && !userRole.equals("ROLE_ADMIN"))
+                userRole = role;
+            else if(role.equals("ROLE_USER") && userRole.equals(""))
+                userRole = role;
+        }
+
+        return userRole;
     }
 }
