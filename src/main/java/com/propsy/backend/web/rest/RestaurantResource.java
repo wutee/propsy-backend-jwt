@@ -1,22 +1,28 @@
 package com.propsy.backend.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.propsy.backend.domain.Authority;
 import com.propsy.backend.domain.Restaurant;
+import com.propsy.backend.domain.User;
+import com.propsy.backend.service.UserService;
 import com.propsy.backend.repository.RestaurantRepository;
 import com.propsy.backend.web.rest.errors.BadRequestAlertException;
 import com.propsy.backend.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing Restaurant.
@@ -31,8 +37,11 @@ public class RestaurantResource {
 
     private final RestaurantRepository restaurantRepository;
 
-    public RestaurantResource(RestaurantRepository restaurantRepository) {
+    private final UserService userService;
+
+    public RestaurantResource(RestaurantRepository restaurantRepository, UserService userService) {
         this.restaurantRepository = restaurantRepository;
+        this.userService = userService;
     }
 
     /**
@@ -86,7 +95,20 @@ public class RestaurantResource {
     @Timed
     public List<Restaurant> getAllRestaurants() {
         log.debug("REST request to get all Restaurants");
-        return restaurantRepository.findAll();
+
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+        if(!isUser.isPresent()) {
+            log.error("User is not logged in");
+            return null;
+        }
+
+        final User currentUser = isUser.get();
+
+        for(Authority authority : currentUser.getAuthorities())
+            if(authority.getName().equals("ROLE_ADMIN"))
+                return restaurantRepository.findAll();
+
+        return restaurantRepository.findByWorkerIsCurrentUser();
     }
 
     /**
