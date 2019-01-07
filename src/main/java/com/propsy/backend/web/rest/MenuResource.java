@@ -87,7 +87,7 @@ public class MenuResource {
     @Timed
     public List<Menu> getAllMenus(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Menus");
-        return menuRepository.findAllWithEagerRelationships();
+        return menuRepository.findByUserWithEagerRelationships();
     }
 
     /**
