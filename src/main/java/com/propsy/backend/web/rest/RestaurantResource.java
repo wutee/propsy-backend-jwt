@@ -66,9 +66,7 @@ public class RestaurantResource {
         }
 
         final User user = isUser.get();
-        Set<Authority> userAuthorities = user.getAuthorities();
-
-        String userRole = getRole(userAuthorities);
+        String userRole = getRole(user.getAuthorities());
 
         if(userRole.equals("ROLE_ADMIN") || restaurant.getWorker().getId() == null || restaurant.getWorker().getId().equals(user.getId())) {
             Restaurant result = restaurantRepository.save(restaurant);
@@ -77,7 +75,9 @@ public class RestaurantResource {
                 .body(result);
         }
 
-        throw new BadRequestAlertException("Cannot create a restaurant owned by a different user", ENTITY_NAME, "forbidden");
+        throw new BadRequestAlertException("Cannot create a restaurant owned by a different user",
+            ENTITY_NAME,
+            "forbidden");
     }
 
     /**
@@ -108,9 +108,7 @@ public class RestaurantResource {
         }
 
         final User user = isUser.get();
-        Set<Authority> userAuthorities = user.getAuthorities();
-
-        String userRole = getRole(userAuthorities);
+        String userRole = getRole(user.getAuthorities());
 
         final Optional<Restaurant> isRestaurant = restaurantRepository.findById(restaurantId);
 
@@ -129,7 +127,9 @@ public class RestaurantResource {
                 .body(result);
         }
 
-        throw new BadRequestAlertException("Cannot edit a restaurant owned by a different user", ENTITY_NAME, "forbidden");
+        throw new BadRequestAlertException("Cannot edit a restaurant owned by a different user",
+            ENTITY_NAME,
+            "forbidden");
     }
 
     /**
@@ -177,10 +177,7 @@ public class RestaurantResource {
         }
 
         final User user = isUser.get();
-        Set<Authority> userAuthorities = user.getAuthorities();
-
-        String userRole = getRole(userAuthorities);
-
+        String userRole = getRole(user.getAuthorities());
         final Optional<Restaurant> isRestaurant = restaurantRepository.findById(id);
 
         if(!isRestaurant.isPresent()) {
@@ -199,13 +196,14 @@ public class RestaurantResource {
                     .build();
         }
 
-        throw new BadRequestAlertException("Cannot delete a restaurant owned by a different user", ENTITY_NAME, "forbidden");
+        throw new BadRequestAlertException("Cannot delete a restaurant owned by a different user",
+            ENTITY_NAME,
+            "forbidden");
     }
 
-
-    private String getRole(Set<Authority> userAuthorities) {
+    private String getRole(Set<Authority> authorities) {
         String userRole = "";
-        for(Authority authority : userAuthorities) {
+        for(Authority authority : authorities) {
             String role = authority.getName();
             if(role.equals("ROLE_ADMIN"))
                 userRole = role;
