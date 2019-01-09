@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
-import { IFoodOrder } from 'app/shared/model/food-order.model';
-import { AccountService, User } from 'app/core';
+import { IFoodOrder, OrderStatus } from 'app/shared/model/food-order.model';
+import { User } from 'app/core';
 
 type EntityResponseType = HttpResponse<IFoodOrder>;
 type EntityArrayResponseType = HttpResponse<IFoodOrder[]>;
@@ -33,7 +33,8 @@ export class FoodOrderService {
                 .get<IFoodOrder[]>(this.resourceUrl + '/forMyRestaurants/' + acc.id, { observe: 'response' })
                 .pipe(
                     map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)),
-                    map((res: EntityArrayResponseType) => res.body)
+                    map((res: EntityArrayResponseType) => res.body),
+                    map((res: IFoodOrder[]) => res.filter(x => x.status != OrderStatus.IN_DELIVERY && x.status != OrderStatus.DELIVERED))
                 );
 
             this.foodOrdersRequest.subscribe(result => this.foodOrdersSubject.next(result), err => this.foodOrdersSubject.error(err));
