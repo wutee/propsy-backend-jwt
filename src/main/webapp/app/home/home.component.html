@@ -1,40 +1,87 @@
 <div class="row">
+    <div class="col-md-12">
+        <h2>Twoje zamówienia</h2>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap;">
+        <div class="card"
+             *ngFor="let a of foodOrders"
+             style="width: 20rem;margin: 10px;">
+            <div class="card-body">
+                <h5 class="card-title"></h5>
+                <h6 class="card-subtitle mb-2">{{a.date | date:'dd/MM/yy HH:mm' }} - {{a.status}}</h6>
+                <p class="card-text">{{a.purchaserComment}}</p>
+
+                <hr/>
+
+                <ul>
+                    <li class="card-subtitle mb-2 text-muted"
+                        *ngFor="let food of (a.foodItems || [])">
+                        {{food.nameSlug}} ({{food.calories}} kcal)
+                    </li>
+                </ul>
+
+
+                <hr/>
+
+                <a href="#"
+                   class="btn btn-primary"
+                   *ngIf="a.status == 'NEW' || a.status == 'CONFIRMED'"
+                   (click)="orderToWIP(a)">
+                    Przenieś do realizacji
+                </a>
+                <a href="#"
+                   class="btn btn-warning"
+                   *ngIf="a.status == 'IN_PROGRESS'"
+                   (click)="orderToPickUp(a)">
+                    Ustaw do odebrania
+                </a>
+                <a href="#" class="card-link">Odrzuć</a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="foodOrders.length == 0">
+        <span style="margin: 10px">Aktualnie nie posiadasz żadnych zamówień</span>
+    </div>
+
+</div>
+
+<hr/>
+
+<div class="row">
     <div class="col-md-3">
         <span class="hipster img-fluid rounded"></span>
     </div>
     <div class="col-md-9">
-        <h1 class="display-4" jhiTranslate="home.title">Welcome, kind visitor!</h1>
+        <!--<h1 class="display-4" jhiTranslate="home.title">Welcome, kind visitor!</h1>-->
         <p class="lead" jhiTranslate="home.subtitle">This is what we did. wut.ee</p>
 
         <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
                 <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
-                    translateValues="{username: '{{account.login}}'}"> You are logged in as user "{{account.login}}". </span>
+                      translateValues="{username: '{{account.login}}'}"> You are logged in as user "{{account.login}}". </span>
             </div>
 
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
-                <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign in</a><span jhiTranslate="global.messages.info.authenticated.suffix">, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
+                <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign
+                    in</a><span jhiTranslate="global.messages.info.authenticated.suffix">, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
             </div>
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
-                <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
+                <a class="alert-link" routerLink="register" jhiTranslate="global.messages.info.register.link">Register a
+                    new account</a>
             </div>
         </div>
 
-        <p jhiTranslate="home.question">
-            If you have any question on JHipster:
-        </p>
-
         <ul>
             <li><a href="https://github.com/wutee/" target="_blank" rel="noopener">GitHub wut.ee</a></li>
-            <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener" jhiTranslate="home.link.stackoverflow">JHipster on Stack Overflow</a></li>
-            <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener" jhiTranslate="home.link.bugtracker">JHipster bug tracker</a></li>
-            <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener" jhiTranslate="home.link.chat">JHipster public chat room</a></li>
         </ul>
 
         <p>
-            <span jhiTranslate="home.like">If you like JHipster, don't forget to give us a star on</span> <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener" jhiTranslate="home.github">GitHub</a>!
+            <span>Nie zapomnij dać nam gwiazki na</span> <a
+            href="https://github.com/wutee/propsy-backend-jwt" target="_blank" rel="noopener"
+            jhiTranslate="home.github">GitHub</a>!
         </p>
     </div>
 </div>

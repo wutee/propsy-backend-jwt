@@ -104,6 +104,13 @@ public class FoodOrderResource {
         return foodOrderRepository.findByPurchaserIsCurrentUser();
     }
 
+    @GetMapping("/food-orders/forMyRestaurants/{id}")
+    @Timed
+    public List<FoodOrder> getMyRestaurantsFoodOrders(@PathVariable Long id) {
+        log.debug("REST request to get my restaurants FoodOrders");
+        return foodOrderRepository.findAllFromMyRestaurants(id);
+    }
+
     /**
      * GET  /food-orders/:id : get the "id" foodOrder.
      *

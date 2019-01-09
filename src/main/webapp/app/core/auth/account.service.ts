@@ -49,6 +49,10 @@ export class AccountService {
         return false;
     }
 
+    getIdentity() {
+        return this.userIdentity;
+    }
+
     hasAuthority(authority: string): Promise<boolean> {
         if (!this.authenticated) {
             return Promise.resolve(false);

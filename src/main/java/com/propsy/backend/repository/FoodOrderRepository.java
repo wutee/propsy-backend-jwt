@@ -33,4 +33,6 @@ public interface FoodOrderRepository extends JpaRepository<FoodOrder, Long> {
     @Query("select food_order from FoodOrder food_order left join fetch food_order.foodItems where food_order.id =:id")
     Optional<FoodOrder> findOneWithEagerRelationships(@Param("id") Long id);
 
+    @Query("select food_order from FoodOrder food_order left join fetch food_order.foodItems left join fetch food_order.restaurant where food_order.restaurant.worker.id =:id")
+    List<FoodOrder> findAllFromMyRestaurants(@Param("id") Long id);
 }
